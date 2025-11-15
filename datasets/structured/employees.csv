@@ -1,0 +1,16 @@
+employee_id,name,department,salary,age,hire_date
+1001,Alice Johnson,Engineering,95000,32,2018-03-15
+1002,Bob Smith,Sales,65000,28,2019-06-20
+1003,Carol White,Engineering,92000,35,2017-01-10
+1004,David Brown,Marketing,72000,31,2019-04-12
+1005,Emma Davis,Finance,88000,42,2016-09-08
+1006,Frank Miller,Engineering,98000,38,2017-11-22
+1007,Grace Lee,HR,68000,26,2021-02-14
+1008,Henry Wilson,Sales,71000,33,2018-07-30
+1009,Iris Taylor,Engineering,105000,40,2016-05-18
+1010,Jack Anderson,Marketing,75000,29,2020-01-25
+1011,Kelly Thomas,Finance,91000,37,2017-08-11
+1012,Leo Jackson,Engineering,99000,36,2017-12-03
+1013,Mary White,Sales,68000,27,2020-09-14
+1014,Nathan Harris,Marketing,70000,30,2019-10-22
+1015,Olivia Martin,Finance,89000,39,2016-06-05

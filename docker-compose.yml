@@ -1,0 +1,297 @@
+services:
+  # ZooKeeper - Coordination service for HBase
+  zookeeper:
+    build:
+      context: ./docker/base
+      dockerfile: zookeeper.Dockerfile
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOO_CFG_EXTRA: "dataDir=/var/lib/zookeeper"
+    volumes:
+      - ./data/zookeeper:/var/lib/zookeeper
+    networks:
+      - hadoop-net
+    healthcheck:
+      test: ["CMD", "echo", "ruok | nc localhost 2181"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # MariaDB - Hive Metastore Database
+  mariadb:
+    image: mariadb:10.6
+    container_name: mariadb
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: hive_metastore
+      MYSQL_USER: hive
+      MYSQL_PASSWORD: hive
+    volumes:
+      - ./data/mariadb:/var/lib/mysql
+    networks:
+      - hadoop-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # HDFS NameNode
+  namenode:
+    build:
+      context: ./docker/namenode
+      dockerfile: Dockerfile
+    container_name: namenode
+    ports:
+      - "9870:9870"
+      - "9000:9000"
+    environment:
+      CLUSTER_NAME: "hadoop-cluster"
+    volumes:
+      - ./data/namenode:/hadoop/dfs/name
+      - ./config/hadoop:/etc/hadoop/conf
+      - ./datasets:/datasets:ro
+    networks:
+      - hadoop-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9870"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # HDFS DataNode 1
+  datanode1:
+    build:
+      context: ./docker/datanode
+      dockerfile: Dockerfile
+    container_name: datanode1
+    ports:
+      - "9864:9864"
+    environment:
+      CLUSTER_NAME: "hadoop-cluster"
+    volumes:
+      - ./data/datanode1:/hadoop/dfs/data
+      - ./config/hadoop:/etc/hadoop/conf
+    depends_on:
+      namenode:
+        condition: service_healthy
+    networks:
+      - hadoop-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9864"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # HDFS DataNode 2
+  datanode2:
+    build:
+      context: ./docker/datanode
+      dockerfile: Dockerfile
+    container_name: datanode2
+    ports:
+      - "9865:9864"
+    environment:
+      CLUSTER_NAME: "hadoop-cluster"
+    volumes:
+      - ./data/datanode2:/hadoop/dfs/data
+      - ./config/hadoop:/etc/hadoop/conf
+    depends_on:
+      namenode:
+        condition: service_healthy
+    networks:
+      - hadoop-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9864"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # YARN ResourceManager
+  resourcemanager:
+    build:
+      context: ./docker/resourcemanager
+      dockerfile: Dockerfile
+    container_name: resourcemanager
+    ports:
+      - "8088:8088"
+      - "8032:8032"
+    environment:
+      CLUSTER_NAME: "hadoop-cluster"
+    volumes:
+      - ./config/hadoop:/etc/hadoop/conf
+    depends_on:
+      namenode:
+        condition: service_healthy
+    networks:
+      - hadoop-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8088"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # YARN NodeManager
+  nodemanager:
+    build:
+      context: ./docker/nodemanager
+      dockerfile: Dockerfile
+    container_name: nodemanager
+    ports:
+      - "8042:8042"
+    environment:
+      CLUSTER_NAME: "hadoop-cluster"
+    volumes:
+      - ./config/hadoop:/etc/hadoop/conf
+    depends_on:
+      resourcemanager:
+        condition: service_healthy
+    networks:
+      - hadoop-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8042"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # MapReduce HistoryServer
+  historyserver:
+    build:
+      context: ./docker/historyserver
+      dockerfile: Dockerfile
+    container_name: historyserver
+    ports:
+      - "19888:19888"
+    environment:
+      CLUSTER_NAME: "hadoop-cluster"
+    volumes:
+      - ./config/hadoop:/etc/hadoop/conf
+    depends_on:
+      namenode:
+        condition: service_healthy
+    networks:
+      - hadoop-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:19888"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Hive Metastore
+  hive-metastore:
+    build:
+      context: ./docker/hive
+      dockerfile: metastore.Dockerfile
+    container_name: hive-metastore
+    environment:
+      SERVICE_NAME: metastore
+      DB_DRIVER: org.mariadb.jdbc.Driver
+      DB_HOST: mariadb
+      DB_NAME: hive_metastore
+      DB_USER: hive
+      DB_PASSWD: hive
+    volumes:
+      - ./config/hive:/etc/hive/conf
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      namenode:
+        condition: service_healthy
+    networks:
+      - hadoop-net
+    healthcheck:
+      test: ["CMD", "sh", "-c", "echo select 1 | nc localhost 9083"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # HiveServer2
+  hive-server:
+    build:
+      context: ./docker/hive
+      dockerfile: server.Dockerfile
+    container_name: hive-server
+    ports:
+      - "10000:10000"
+      - "10002:10002"
+    environment:
+      SERVICE_NAME: hiveserver2
+      METASTORE_HOST: hive-metastore
+      METASTORE_PORT: 9083
+    volumes:
+      - ./config/hive:/etc/hive/conf
+    depends_on:
+      hive-metastore:
+        condition: service_healthy
+      namenode:
+        condition: service_healthy
+    networks:
+      - hadoop-net
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "10000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # HBase Master
+  hbase-master:
+    build:
+      context: ./docker/hbase
+      dockerfile: master.Dockerfile
+    container_name: hbase-master
+    ports:
+      - "16010:16010"
+      - "16000:16000"
+    environment:
+      HBASE_CONF_hbase_rootdir: "hdfs://namenode:9000/hbase"
+      HBASE_CONF_hbase_zookeeper_quorum: "zookeeper:2181"
+      HBASE_CONF_hbase_master_hostname: "hbase-master"
+      HBASE_CONF_hbase_zookeeper_useMultipleZNodes: "false"
+      HBASE_MANAGES_ZK: "false"
+    volumes:
+      - ./data/hbase:/hbase-data
+      - ./config/hbase:/etc/hbase/conf
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+      namenode:
+        condition: service_healthy
+    networks:
+      - hadoop-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:16010"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # HBase RegionServer
+  hbase-regionserver:
+    build:
+      context: ./docker/hbase
+      dockerfile: regionserver.Dockerfile
+    container_name: hbase-regionserver
+    ports:
+      - "16030:16030"
+    environment:
+      HBASE_CONF_hbase_rootdir: "hdfs://namenode:9000/hbase"
+      HBASE_CONF_hbase_zookeeper_quorum: "zookeeper:2181"
+      HBASE_CONF_hbase_master_hostname: "hbase-master"
+      HBASE_CONF_hbase_zookeeper_useMultipleZNodes: "false"
+      HBASE_MANAGES_ZK: "false"
+      HBASE_REGIONSERVER_HOSTNAME: "hbase-regionserver"
+    volumes:
+      - ./data/hbase:/hbase-data
+      - ./config/hbase:/etc/hbase/conf
+    depends_on:
+      hbase-master:
+        condition: service_healthy
+    networks:
+      - hadoop-net
+
+networks:
+  hadoop-net:
+    driver: bridge

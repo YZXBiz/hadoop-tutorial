@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+    <!-- HBase root directory in HDFS -->
+    <property>
+        <name>hbase.rootdir</name>
+        <value>hdfs://namenode:9000/hbase</value>
+        <description>The directory shared by region servers and into which HBase persists. Should be fully-qualified to include the filesystem scheme. For example, hdfs://namenode:8020/hbase</description>
+    </property>
+
+    <!-- ZooKeeper quorum -->
+    <property>
+        <name>hbase.zookeeper.quorum</name>
+        <value>zookeeper:2181</value>
+        <description>Comma separated list of servers in the ZooKeeper Quorum</description>
+    </property>
+
+    <!-- ZooKeeper data directory -->
+    <property>
+        <name>hbase.zookeeper.property.dataDir</name>
+        <value>/var/lib/zookeeper</value>
+    </property>
+
+    <!-- HBase master host -->
+    <property>
+        <name>hbase.master.hostname</name>
+        <value>hbase-master</value>
+    </property>
+
+    <!-- HBase master web UI -->
+    <property>
+        <name>hbase.master.info.port</name>
+        <value>16010</value>
+    </property>
+
+    <!-- HBase RegionServer web UI -->
+    <property>
+        <name>hbase.regionserver.info.port</name>
+        <value>16030</value>
+    </property>
+
+    <!-- Distributed mode -->
+    <property>
+        <name>hbase.cluster.distributed</name>
+        <value>true</value>
+    </property>
+
+    <!-- HBase manages ZooKeeper -->
+    <property>
+        <name>hbase.manages.zk</name>
+        <value>false</value>
+        <description>Set to false to prevent HBase from managing ZooKeeper. We have a separate ZooKeeper instance.</description>
+    </property>
+
+    <!-- Compression codec -->
+    <property>
+        <name>hbase.regionserver.codecs</name>
+        <value>snappy</value>
+    </property>
+
+    <!-- HBase thread settings -->
+    <property>
+        <name>hbase.master.handler.count</name>
+        <value>25</value>
+    </property>
+
+    <property>
+        <name>hbase.regionserver.handler.count</name>
+        <value>30</value>
+    </property>
+
+    <!-- HBase regions and blockcache size -->
+    <property>
+        <name>hfile.block.cache.size</name>
+        <value>0.4</value>
+    </property>
+
+    <!-- Region server heap -->
+    <property>
+        <name>hbase.regionserver.heapsize</name>
+        <value>1024</value>
+    </property>
+
+    <!-- HBase client write buffer -->
+    <property>
+        <name>hbase.client.write.buffer</name>
+        <value>2097152</value>
+    </property>
+
+    <!-- HBase WAL (Write Ahead Log) settings -->
+    <property>
+        <name>hbase.wal.replication.cluster.id</name>
+        <value>hbase-cluster</value>
+    </property>
+
+    <!-- Performance tuning -->
+    <property>
+        <name>hbase.hregion.max.filesize</name>
+        <value>10737418240</value>
+        <description>Maximum file size for HFiles (10GB)</description>
+    </property>
+
+    <property>
+        <name>hbase.hregion.memstore.flush.size</name>
+        <value>134217728</value>
+        <description>Memstore flush size (128MB)</description>
+    </property>
+
+    <!-- Regional server RPC timeout -->
+    <property>
+        <name>hbase.rpc.timeout</name>
+        <value>60000</value>
+    </property>
+
+    <!-- ZooKeeper use multiple nodes -->
+    <property>
+        <name>hbase.zookeeper.useMultipleZNodes</name>
+        <value>false</value>
+    </property>
+
+    <!-- Allow ZK to connect without Sasl -->
+    <property>
+        <name>hbase.zookeeper.client.secure</name>
+        <value>false</value>
+    </property>
+
+    <property>
+        <name>hbase.zookeeper.server.principal</name>
+        <value>zookeeper/_HOST@EXAMPLE.COM</value>
+    </property>
+</configuration>

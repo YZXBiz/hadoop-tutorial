@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+    <!-- Use YARN as the MapReduce framework -->
+    <property>
+        <name>mapreduce.framework.name</name>
+        <value>yarn</value>
+        <description>The runtime framework for executing MapReduce jobs.</description>
+    </property>
+
+    <!-- MapReduce job history server -->
+    <property>
+        <name>mapreduce.jobhistory.address</name>
+        <value>historyserver:10020</value>
+        <description>The address of the HistoryServer.</description>
+    </property>
+
+    <!-- MapReduce job history web UI -->
+    <property>
+        <name>mapreduce.jobhistory.webapp.address</name>
+        <value>historyserver:19888</value>
+        <description>The address of the HistoryServer web application.</description>
+    </property>
+
+    <!-- Enable intermediate compression -->
+    <property>
+        <name>mapreduce.map.output.compress</name>
+        <value>false</value>
+    </property>
+
+    <!-- Mapper and Reducer memory/heap configuration -->
+    <property>
+        <name>mapreduce.map.memory.mb</name>
+        <value>512</value>
+        <description>Heap size allocated for map tasks.</description>
+    </property>
+
+    <property>
+        <name>mapreduce.reduce.memory.mb</name>
+        <value>512</value>
+        <description>Heap size allocated for reduce tasks.</description>
+    </property>
+
+    <!-- Java heap options for mapper and reducer -->
+    <property>
+        <name>mapreduce.map.java.opts</name>
+        <value>-Xmx410m</value>
+    </property>
+
+    <property>
+        <name>mapreduce.reduce.java.opts</name>
+        <value>-Xmx410m</value>
+    </property>
+
+    <!-- Number of reduce tasks -->
+    <property>
+        <name>mapreduce.job.reduces</name>
+        <value>1</value>
+    </property>
+
+    <!-- Default task parallelism -->
+    <property>
+        <name>mapreduce.job.maps</name>
+        <value>1</value>
+    </property>
+
+    <!-- Sort configuration -->
+    <property>
+        <name>mapreduce.task.io.sort.mb</name>
+        <value>100</value>
+    </property>
+
+    <!-- Job output directory -->
+    <property>
+        <name>mapreduce.output.fileoutputformat.compress</name>
+        <value>false</value>
+    </property>
+</configuration>

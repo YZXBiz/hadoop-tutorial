@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+    <!-- ResourceManager host -->
+    <property>
+        <name>yarn.resourcemanager.hostname</name>
+        <value>resourcemanager</value>
+        <description>The hostname of the Resource Manager.</description>
+    </property>
+
+    <!-- ResourceManager web UI -->
+    <property>
+        <name>yarn.resourcemanager.webapp.address</name>
+        <value>0.0.0.0:8088</value>
+    </property>
+
+    <!-- ResourceManager scheduler -->
+    <property>
+        <name>yarn.resourcemanager.scheduler.class</name>
+        <value>org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler</value>
+    </property>
+
+    <!-- ResourceManager resource tracking -->
+    <property>
+        <name>yarn.resourcemanager.resource-tracker.address</name>
+        <value>resourcemanager:8031</value>
+    </property>
+
+    <!-- ResourceManager admin address -->
+    <property>
+        <name>yarn.resourcemanager.admin.address</name>
+        <value>resourcemanager:8033</value>
+    </property>
+
+    <!-- ResourceManager IPC -->
+    <property>
+        <name>yarn.resourcemanager.address</name>
+        <value>resourcemanager:8032</value>
+    </property>
+
+    <!-- NodeManager resource configuration -->
+    <property>
+        <name>yarn.nodemanager.resource.memory-mb</name>
+        <value>2048</value>
+        <description>Amount of physical memory, in MB, that can be allocated for containers.</description>
+    </property>
+
+    <!-- NodeManager CPU cores -->
+    <property>
+        <name>yarn.nodemanager.resource.cpu-vcores</name>
+        <value>2</value>
+        <description>Number of CPU cores available on the node.</description>
+    </property>
+
+    <!-- NodeManager web UI -->
+    <property>
+        <name>yarn.nodemanager.webapp.address</name>
+        <value>0.0.0.0:8042</value>
+    </property>
+
+    <!-- NodeManager local directories -->
+    <property>
+        <name>yarn.nodemanager.local-dirs</name>
+        <value>/hadoop/yarn/local</value>
+    </property>
+
+    <!-- NodeManager log directories -->
+    <property>
+        <name>yarn.nodemanager.log-dirs</name>
+        <value>/hadoop/yarn/logs</value>
+    </property>
+
+    <!-- Enable container sandboxing -->
+    <property>
+        <name>yarn.nodemanager.linux-container-executor.group</name>
+        <value>hadoop</value>
+    </property>
+
+    <!-- Virtual memory check -->
+    <property>
+        <name>yarn.nodemanager.vmem-check-enabled</name>
+        <value>false</value>
+    </property>
+
+    <!-- Virtual memory ratio -->
+    <property>
+        <name>yarn.nodemanager.vmem-pmem-ratio</name>
+        <value>2.1</value>
+    </property>
+
+    <!-- Scheduler configuration -->
+    <property>
+        <name>yarn.scheduler.capacity.maximum-applications</name>
+        <value>10000</value>
+    </property>
+
+    <!-- Logging configuration -->
+    <property>
+        <name>yarn.log-aggregation-enable</name>
+        <value>true</value>
+    </property>
+
+    <property>
+        <name>yarn.log-aggregation.retain-seconds</name>
+        <value>604800</value>
+    </property>
+
+    <!-- Application classpath -->
+    <property>
+        <name>yarn.application.classpath</name>
+        <value>$HADOOP_COMMON_HOME/share/hadoop/common/*,$HADOOP_COMMON_HOME/share/hadoop/common/lib/*,$HADOOP_HDFS_HOME/share/hadoop/hdfs/*,$HADOOP_HDFS_HOME/share/hadoop/hdfs/lib/*,$HADOOP_YARN_HOME/share/hadoop/yarn/*,$HADOOP_YARN_HOME/share/hadoop/yarn/lib/*</value>
+    </property>
+
+    <!-- Node Manager handlers -->
+    <property>
+        <name>yarn.nodemanager.container-manager.thread-count</name>
+        <value>20</value>
+    </property>
+</configuration>

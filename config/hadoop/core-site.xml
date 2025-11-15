@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+    <!-- Default file system name -->
+    <property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://namenode:9000</value>
+        <description>The name of the default file system. A URI whose scheme and authority determine the FileSystem implementation.</description>
+    </property>
+
+    <!-- I/O file descriptor limit -->
+    <property>
+        <name>fs.file.impl</name>
+        <value>org.apache.hadoop.fs.LocalFileSystem</value>
+    </property>
+
+    <!-- Trash configuration -->
+    <property>
+        <name>fs.trash.interval</name>
+        <value>360</value>
+        <description>Minutes after which to delete trash files</description>
+    </property>
+
+    <!-- Enable security (optional, can be disabled for learning) -->
+    <property>
+        <name>hadoop.security.authorization</name>
+        <value>false</value>
+    </property>
+
+    <!-- Temporary directories -->
+    <property>
+        <name>hadoop.tmp.dir</name>
+        <value>/hadoop/tmp</value>
+        <description>A base for other temporary directories.</description>
+    </property>
+
+    <!-- Configuration for map reduce compression -->
+    <property>
+        <name>io.compression.codecs</name>
+        <value>org.apache.hadoop.io.compress.GzipCodec,org.apache.hadoop.io.compress.DefaultCodec</value>
+    </property>
+</configuration>

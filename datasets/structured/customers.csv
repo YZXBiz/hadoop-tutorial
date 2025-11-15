@@ -1,0 +1,16 @@
+customer_id,name,email,region,join_date,total_spend
+2001,John Doe,john@example.com,North,2020-01-15,5234.50
+2002,Jane Smith,jane@example.com,South,2019-05-20,12450.75
+2003,Robert Johnson,robert@example.com,East,2021-03-10,3200.00
+2004,Mary Williams,mary@example.com,West,2018-08-05,18900.25
+2005,Michael Brown,michael@example.com,North,2019-11-30,7654.80
+2006,Patricia Davis,patricia@example.com,South,2020-06-12,9876.45
+2007,James Miller,james@example.com,East,2021-01-20,2345.50
+2008,Jennifer Wilson,jennifer@example.com,West,2019-09-08,14320.00
+2009,Charles Moore,charles@example.com,North,2020-04-25,8765.30
+2010,Linda Taylor,linda@example.com,South,2018-12-03,21500.75
+2011,Mark Anderson,mark@example.com,East,2021-02-14,1250.00
+2012,Barbara Thomas,barbara@example.com,West,2020-07-19,16234.90
+2013,Donald Jackson,donald@example.com,North,2019-10-05,4500.25
+2014,Susan Harris,susan@example.com,South,2020-11-08,11234.60
+2015,Christopher Martin,chris@example.com,East,2021-05-22,6780.40

@@ -1,0 +1,16 @@
+product_id,product_name,category,price,stock_quantity
+3001,Laptop Pro,Electronics,1299.99,45
+3002,Wireless Mouse,Electronics,29.99,320
+3003,USB-C Cable,Electronics,12.99,1200
+3004,Office Chair,Furniture,299.99,120
+3005,Standing Desk,Furniture,599.99,85
+3006,Monitor 4K,Electronics,449.99,78
+3007,Mechanical Keyboard,Electronics,159.99,245
+3008,Desk Lamp,Furniture,79.99,340
+3009,Notebook Set,Stationery,19.99,890
+3010,Pen Pack,Stationery,9.99,2100
+3011,Ergonomic Footrest,Furniture,49.99,210
+3012,External SSD 1TB,Electronics,89.99,420
+3013,Webcam HD,Electronics,69.99,510
+3014,Phone Stand,Accessories,15.99,1450
+3015,Cable Organizer,Accessories,24.99,670
